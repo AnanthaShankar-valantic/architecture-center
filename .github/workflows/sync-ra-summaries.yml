@@ -16,8 +16,8 @@ jobs:
         run: |
           git remote add upstream https://github.com/SAP/architecture-center.git
           git fetch upstream
-          git merge upstream/main --no-edit
-          git push origin HEAD:main
+          git merge upstream/dev --no-edit
+          git push origin HEAD:dev
 
       - name: Checkout sap-architecture-assistant
         uses: actions/checkout@v4
