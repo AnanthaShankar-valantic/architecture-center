@@ -1,0 +1,46 @@
+name: Sync RA summaries to sap-architecture-assistant
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # weekly, Monday 06:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout architecture-center fork
+        uses: actions/checkout@v4
+
+      - name: Merge upstream SAP/architecture-center
+        run: |
+          git remote add upstream https://github.com/SAP/architecture-center.git
+          git fetch upstream
+          git merge upstream/main --no-edit
+          git push origin HEAD:main
+
+      - name: Checkout sap-architecture-assistant
+        uses: actions/checkout@v4
+        with:
+          repository: AnanthaShankar-valantic/sap-architecture-assistant
+          token: ${{ secrets.ASSISTANT_REPO_TOKEN }}
+          path: sap-architecture-assistant
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run extraction
+        run: python sap-architecture-assistant/scripts/extract-ra-summaries.py "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/sap-architecture-assistant"
+
+      - name: Open PR if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.ASSISTANT_REPO_TOKEN }}
+          path: sap-architecture-assistant
+          branch: sync/ra-summaries
+          title: "Sync RA summaries from architecture-center"
+          body: "Automated re-extraction after an upstream architecture-center update. Review before merging - the extraction script is a deterministic keyword pass, not a full read."
+          commit-message: "Sync RA summaries from architecture-center"
+          add-paths: knowledge/ra-summaries/**
