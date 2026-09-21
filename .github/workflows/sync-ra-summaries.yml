@@ -22,7 +22,7 @@ jobs:
       - name: Checkout sap-architecture-assistant
         uses: actions/checkout@v4
         with:
-          repository: AnanthaShankar-valantic/sap-architecture-assistant
+          repository: valantic-SCE-IBP/sap-architecture-assistant
           token: ${{ secrets.ASSISTANT_REPO_TOKEN }}
           path: sap-architecture-assistant
 
