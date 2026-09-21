@@ -8,6 +8,8 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the upstream merge back to this (architecture-center) repo
     steps:
       - name: Checkout architecture-center fork
         uses: actions/checkout@v4
