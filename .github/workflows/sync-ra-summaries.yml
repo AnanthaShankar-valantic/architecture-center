@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout architecture-center fork
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history needed so the upstream merge can find a common ancestor
 
       - name: Merge upstream SAP/architecture-center
         run: |
