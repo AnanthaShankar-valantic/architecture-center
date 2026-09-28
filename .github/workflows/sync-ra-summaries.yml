@@ -18,6 +18,8 @@ jobs:
 
       - name: Merge upstream SAP/architecture-center
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git remote add upstream https://github.com/SAP/architecture-center.git
           git fetch upstream
           git merge upstream/dev --no-edit
