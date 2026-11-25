@@ -13,20 +13,20 @@ jobs:
     steps:
       # Read SAP's repo directly: pushing the upstream merge to the fork fails when SAP edits workflow files.
       - name: Checkout SAP/architecture-center
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: SAP/architecture-center
           ref: dev
 
       - name: Checkout sap-architecture-assistant
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: valantic-SCE-IBP/sap-architecture-assistant
           token: ${{ secrets.ASSISTANT_REPO_TOKEN }}
           path: sap-architecture-assistant
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -34,7 +34,7 @@ jobs:
         run: python sap-architecture-assistant/scripts/extract-ra-summaries.py "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/sap-architecture-assistant"
 
       - name: Open PR if anything changed
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.ASSISTANT_REPO_TOKEN }}
           path: sap-architecture-assistant
